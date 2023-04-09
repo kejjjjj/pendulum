@@ -24,6 +24,7 @@
     <ProjectGuid>{c892f892-f7fb-41d6-8c0b-aaa629870b5c}</ProjectGuid>
     <RootNamespace>pendulum</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>femboyfeetlover</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

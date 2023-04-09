@@ -11,6 +11,14 @@
 #define DEG2RAD(x) (x * PI / 180)
 #define RAD2DEG(x) (x * 180 / PI)
 
+#define SIN(x) (sin(DEG2RAD((x))))
+#define COS(x) (cos(DEG2RAD((x))))
+#define TAN(x) (tan(DEG2RAD(x)))
+
+#define ASIN(x) (asin(DEG2RAD((x))))
+#define ACOS(x) (acos(DEG2RAD((x))))
+#define ATAN(x) (atan(DEG2RAD(x)))
+
 typedef float vec_t;
 typedef vec_t vec2_t[2];
 typedef vec_t vec3_t[3];
