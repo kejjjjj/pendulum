@@ -1,15 +1,16 @@
 
 #include "pch.h"
 
-Pendulum* pendulum;
-
+Pendulum* pend;
 bool Game::OnUserCreate()
 {
 	pendulum = 
-		new Pendulum(
+		new MainPendulum(
 			{ScreenWidth()/2, ScreenHeight()/2}, 
 			{100, 5}, 
 			{100, 5});
+
+	pend = new Pendulum(*pendulum);
 
 	engine = this;
 
@@ -17,10 +18,13 @@ bool Game::OnUserCreate()
 }
 bool Game::OnUserUpdate(float fElapsedTime)
 {
+	global_time = GetTime();
 	fElapsed = fElapsedTime;
 	Clear(COL::WHITE);
 	
 	pendulum->Draw();
+	
+	_main();
 
 	return true;
 }

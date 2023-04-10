@@ -16,6 +16,12 @@
     <Filter Include="Source Files\maths">
       <UniqueIdentifier>{bec3ba3b-5d4e-4667-a0b7-9263dc3718d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\INTELLIGENCE">
+      <UniqueIdentifier>{423fb00f-2dcf-4eba-ae47-75debb415a15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\pendulum">
+      <UniqueIdentifier>{21be00c6-d5ba-4b73-b396-40f565e5f8d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="olcPixelGameEngine.h">
@@ -33,11 +39,23 @@
     <ClInclude Include="entry.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="pendulum.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="math.hpp">
       <Filter>Source Files\maths</Filter>
+    </ClInclude>
+    <ClInclude Include="brain.hpp">
+      <Filter>Source Files\INTELLIGENCE</Filter>
+    </ClInclude>
+    <ClInclude Include="cell.hpp">
+      <Filter>Source Files\INTELLIGENCE</Filter>
+    </ClInclude>
+    <ClInclude Include="pendulum.hpp">
+      <Filter>Source Files\pendulum</Filter>
+    </ClInclude>
+    <ClInclude Include="main_pendulum.hpp">
+      <Filter>Source Files\pendulum</Filter>
+    </ClInclude>
+    <ClInclude Include="population.hpp">
+      <Filter>Source Files\INTELLIGENCE</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -53,11 +71,23 @@
     <ClCompile Include="entry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pendulum.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="math.cpp">
       <Filter>Source Files\maths</Filter>
+    </ClCompile>
+    <ClCompile Include="brain.cpp">
+      <Filter>Source Files\INTELLIGENCE</Filter>
+    </ClCompile>
+    <ClCompile Include="cell.cpp">
+      <Filter>Source Files\INTELLIGENCE</Filter>
+    </ClCompile>
+    <ClCompile Include="pendulum.cpp">
+      <Filter>Source Files\pendulum</Filter>
+    </ClCompile>
+    <ClCompile Include="main_pendulum.cpp">
+      <Filter>Source Files\pendulum</Filter>
+    </ClCompile>
+    <ClCompile Include="population.cpp">
+      <Filter>Source Files\INTELLIGENCE</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

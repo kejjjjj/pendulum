@@ -33,6 +33,8 @@ typedef vec_t vec4_t[4];
 #include <algorithm>
 #include <random> // for std::mt19937
 #include <memory>
+#include <list>
+#include <chrono>
 
 #include "olcPixelGameEngine.h"
 
@@ -44,7 +46,14 @@ using olc::vf2d;
 #include "vectors.hpp"
 #include "math.hpp"
 
-#include "entry.hpp"
+#include "brain.hpp"
+#include "cell.hpp"
+
+
+#include "main_pendulum.hpp"
 #include "pendulum.hpp"
+#include "entry.hpp"
+
+#include "population.hpp"
 
 #endif

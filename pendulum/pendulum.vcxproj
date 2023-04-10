@@ -146,16 +146,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="brain.hpp" />
+    <ClInclude Include="cell.hpp" />
     <ClInclude Include="entry.hpp" />
+    <ClInclude Include="main_pendulum.hpp" />
     <ClInclude Include="math.hpp" />
     <ClInclude Include="olcPixelGameEngine.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="pendulum.hpp" />
+    <ClInclude Include="population.hpp" />
     <ClInclude Include="typedefs.hpp" />
     <ClInclude Include="vectors.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="brain.cpp" />
+    <ClCompile Include="cell.cpp" />
     <ClCompile Include="entry.cpp" />
+    <ClCompile Include="main_pendulum.cpp" />
     <ClCompile Include="math.cpp" />
     <ClCompile Include="olcPixelGameEngine.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -166,6 +173,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="pendulum.cpp" />
+    <ClCompile Include="population.cpp" />
     <ClCompile Include="vectors.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

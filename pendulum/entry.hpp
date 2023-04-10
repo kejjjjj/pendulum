@@ -4,6 +4,8 @@
 
 inline olc::PixelGameEngine* engine;
 inline float fElapsed;
+inline MainPendulum* pendulum;
+inline decltype(GetTime()) global_time;
 class Game : public olc::PixelGameEngine
 {
 

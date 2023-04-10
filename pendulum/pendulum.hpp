@@ -8,20 +8,10 @@
 class Pendulum
 {
 public:
-	Pendulum(const ivec2& pos, const ivec2& mins, const ivec2& maxs);
+	Pendulum(const MainPendulum& pend);
 	~Pendulum() = default;
 
 	const float GRAVITY = 9.80665f;
-
-	struct platform
-	{
-		ivec2 pos;
-		ivec2 mins;
-		ivec2 maxs;
-		Pixel color;
-
-		void Draw();
-	}pf;
 
 	struct stand
 	{
@@ -29,11 +19,10 @@ public:
 		ivec2 mins;
 		ivec2 maxs;
 		Pixel color;
-
+		float velocity;
 		ivec2 delta_pos;
 
 		void Draw();
-		void UpdatePos(Pendulum::platform& plat);
 	}s;
 
 	struct Ball
@@ -45,14 +34,26 @@ public:
 		Pixel color;
 		float line_length = 100;
 		float angle = 0;
+		float n_angle = 0;
 		float velocity;
 		float damping = 0.995f;
 		void Draw();
-		void UpdatePos(Pendulum::stand& stand);
 	}b;
 
-	void Draw();
+	void UpdateStand(int direction);
+	void UpdateBall();
+	void Reset();
 
+	ivec2 pos;
+	ivec2 mins;
+	ivec2 maxs;
+	bool rightmove = false;
+
+	friend class Cell;
+
+	Cell cell;
+
+	void Update();
 };
 
 #endif
