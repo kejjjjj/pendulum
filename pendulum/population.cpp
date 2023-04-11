@@ -89,13 +89,18 @@ void Population::NewGeneration()
 	else {
 		BestCell.score = best.score;
 		BestCell.brain.directions = best.brain.directions;
-		BestCell.brain.time_alive = best.brain.time_alive;
 
-		std::time_t now = std::time(0);
+		if (BestCell.brain.time_alive <= best.brain.time_alive) {
+			BestCell.brain.time_alive = best.brain.time_alive;
+			std::time_t now = std::time(0);
 #pragma warning(suppress : 4996)
-		char* dt = std::ctime(&now);
+			char* dt = std::ctime(&now);
+			std::cout << "new record: " << std::format("{:.3f}s", BestCell.brain.time_alive) << " : " << dt;
 
-		std::cout << "new record: " << std::format("{:.3f}s", BestCell.brain.time_alive) << " : " << dt;
+		}
+
+
+		std::cout << "new score: " << std::format("{} points\n", BestCell.score);
 		//auto dist = std::distance(best.brain.directions.begin(), best.brain.it);
 		std::cout << "instructions used: " << best.brain.iterator << '/' << best.brain.directions.size() << '\n';
 	}
@@ -112,7 +117,7 @@ void Population::NewGeneration()
 
 	int j = 0;
 	for (auto& i : population) {
-		i->cell = newCells[j];
+		i->cell = best;
 		i->cell.brain.Mutate();
 		if (j)
 			i->cell.best = false;

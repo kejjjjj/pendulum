@@ -7,8 +7,8 @@ bool Game::OnUserCreate()
 	pendulum = 
 		new MainPendulum(
 			{ScreenWidth()/2, ScreenHeight()/2}, 
-			{100, 5}, 
-			{100, 5});
+			{200, 5}, 
+			{200, 5});
 
 	pend = new Pendulum(*pendulum);
 
