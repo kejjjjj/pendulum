@@ -79,6 +79,8 @@ void Population::NewGeneration()
 	};
 
 	Cell best = SetBestCell();
+	BestCell.best = false;
+	best.best = false;
 
 	if (BestCell.score >= best.score) {
 		best.score = BestCell.score;
@@ -104,23 +106,32 @@ void Population::NewGeneration()
 		//auto dist = std::distance(best.brain.directions.begin(), best.brain.it);
 		std::cout << "instructions used: " << best.brain.iterator << '/' << best.brain.directions.size() << '\n';
 	}
+
 	newCells[0] = best;
 	newCells[0].best = true;
+	
+	for (auto& i : population)
+		i->cell.best = false;
 
-	for (int i = 1; i < population.size(); i++) {
+	population.front()->cell.best = false;
+	population.front()->cell.brain.directions = best.brain.directions;
+	population.front()->cell.brain.time_alive = best.brain.time_alive;
+	population.front()->cell.score = best.score;
 
-		Cell* parent = GetRandomParent();
+	//for (int i = 1; i < population.size(); i++) {
 
-		newCells[i] = *parent;
+	//	Cell* parent = GetRandomParent();
+	//	newCells[i] = *parent;
 
-	}
+	//}
 
 	int j = 0;
 	for (auto& i : population) {
-		i->cell = best;
-		i->cell.brain.Mutate();
-		if (j)
-			i->cell.best = false;
+		if (!i->cell.best) {
+			i->cell.brain.directions = best.brain.directions;
+			i->cell.brain.time_alive = best.brain.time_alive;
+			i->cell.brain.Mutate();
+		}
 		j++;
 	}
 	total_attempts++;

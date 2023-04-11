@@ -26,7 +26,7 @@ public:
 	}
 	void Mutate()
 	{
-		constexpr float rate = 0.01f;
+		 float rate = 0.005f;
 		std::for_each(directions.begin(), directions.end(), [&rate](short& dir)
 			{
 				if (random(1.f) < rate) {

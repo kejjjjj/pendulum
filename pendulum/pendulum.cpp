@@ -142,12 +142,14 @@ void Pendulum::Update()
 		}
 		//engine->DrawString({ 0,100 }, std::format("iteration: {}\nangle: {}", distance(cell.brain.directions.begin(), cell.brain.it), b.n_angle), COL::BLACK);
 		cell.brain.time_alive = TimeDifference<float>(pendulum->start_time, global_time);
+		UpdateStand(*cell.brain.it);
+
 	}
 	else {
+		UpdateStand(0);
+
 		cell.OnDeath();
 	}
-
-	UpdateStand(*cell.brain.it);
 	UpdateBall();
 
 	
