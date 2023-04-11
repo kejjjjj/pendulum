@@ -35,6 +35,7 @@ typedef vec_t vec4_t[4];
 #include <memory>
 #include <list>
 #include <chrono>
+#include <ctime>
 
 #include "olcPixelGameEngine.h"
 

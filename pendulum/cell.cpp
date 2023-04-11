@@ -21,8 +21,11 @@ void Cell::NewGeneration()
 }
 void Cell::GiveScore(float pendulum_angle)
 {
-	//pendulum_angle = fmodf(pendulum_angle, 90) / 2;
-	score += (1);
+	if (pendulum_angle > 90) {
+		pendulum_angle = fmodf(pendulum_angle, 90);
+		score += (pendulum_angle);
+	}
+	else score += 90.f - pendulum_angle;
 }
 void Cell::OnDeath()
 {

@@ -2,73 +2,91 @@
 
 Pendulum::Pendulum(const MainPendulum& pend) : cell(10000)
 {
+
 	pos = pend.pf.pos;
 	mins = pend.pf.mins;
 	maxs = pend.pf.maxs;
 
-	s.pos = { (float)pos.x, (float)pos.y+5 };
+	s.original_pos = { (float)pos.x, (float)pos.y + 5 };
+	s.pos = { (float)s.original_pos.x, (float)s.original_pos.y+5 };
 	const int length = (pos.x + maxs.x - (pos.x - mins.x)) / 15;
 	s.mins = { length, 15 };
 	s.maxs = { length, 15 };
-	s.color = Pixel(rand()%255, rand() % 255, rand() % 255, 255);
+	s.color = olc::Pixel(rand()%255, rand() % 255, rand() % 255, 255);
 
 	b.pos = { pos.x, pos.y - int(b.line_length) };
 	b.radius = 7;
-	b.color = Pixel(255, 0, 0, 255);
+	b.color = olc::Pixel(255, 0, 0, 255);
 	b.pivot = &s.pos;
-	b.angle = 359;
+	b.angle = 1;
 
-	b.pos.x = b.pos.x + (SIN(b.angle) * 10);
-	b.pos.y = b.pos.y - (COS(b.angle) * 10);
+
 
 }
-void Pendulum::stand::Draw()
+void Pendulum::DrawStand()
 {
-	engine->FillRect(pos - mins, { maxs.x*2, maxs.y }, COL::RED);
+
+	auto col = olc::BLACK;
+
+	if (!cell.best) {
+		col.a = 55;
+	}
+	else {
+		col.g = 255;
+	}
+
+	engine->FillRect(s.pos - s.mins, { s.maxs.x*2, s.maxs.y }, col);
+
+
 }
-void Pendulum::Ball::Draw()
+void Pendulum::DrawBall()
 {
 	//pos.x = pos.x + (SIN(angle) * 2);
 	//pos.y = pos.y - (COS(angle) * 2);
+	auto col = b.color;
 
+	if (!cell.best)
+		col.a = 55;
+	else {
+		col.r = 0;
+		col.g = 255;
+	}
+	engine->FillCircle(b.real_pos, b.radius, col);
 
-
-	engine->FillCircle(real_pos, radius, COL::RED);
 }
 
 void Pendulum::UpdateStand(int direction)
 {
 	auto s = &this->s;
-	static float t{};
-	static float ref_vel = 0;
+
 	if (direction == 1) {
 		if (!rightmove)
-			t = 0;
-		s->velocity = std::lerp(s->velocity, 1.f, t);
-		t = std::clamp((t += 0.01f), 0.f, 1.f);
-		ref_vel = s->velocity;
+			s->t = 0;
+		s->velocity = std::lerp(s->velocity, 1.f, s->t);
+		s->t = std::clamp((s->t += 0.01f), 0.f, 1.f);
+		s->ref_velocity = s->velocity;
 		rightmove = true;
 
 	}
 	else if (direction == -1) {
 		if (rightmove)
-			t = 0;
-		s->velocity = std::lerp(s->velocity, -1.f, t);
-		t = std::clamp((t += 0.01f), 0.f, 1.f);
-		ref_vel = s->velocity;
+			s->t = 0;
+		s->velocity = std::lerp(s->velocity, -1.f, s->t);
+		s->t = std::clamp((s->t += 0.01f), 0.f, 1.f);
+		s->ref_velocity = s->velocity;
 
 		rightmove = false;
 	}
 	else if (s->velocity) {
-		s->velocity = std::lerp(0, ref_vel, t);
-		t = std::clamp((t -= 0.01f), 0.f, 1.f);
+		s->velocity = std::lerp(0, s->ref_velocity, s->t);
+		s->t = std::clamp((s->t -= 0.01f), 0.f, 1.f);
 	}
 
 	//engine->DrawString({ 0,0 }, std::format("v: {}", s->velocity), COL::BLACK);
 
 
 
-	s->pos.x += fElapsed * (s->velocity * 255);
+	s->pos.x += fElapsed * (s->velocity * 175);
 
 	if (s->pos.x < pos.x - mins.x) {
 		s->pos.x = pos.x - mins.x;
@@ -97,6 +115,7 @@ void Pendulum::UpdateBall()
 }
 void Pendulum::Update()
 {
+
 	if (!cell.dead) {
 		//short dir = 0;
 
@@ -106,15 +125,12 @@ void Pendulum::Update()
 		//	dir = 1;
 		//}
 
-		UpdateStand(*cell.brain.it);
-		UpdateBall();
 
-		if (cell.brain.time_until_update <= 0) {
+		if (cell.brain.frames > 0) {
+			cell.brain.frames = 0;
 			++cell.brain.it;
-			cell.brain.time_until_update = 0.25f;
-			cell.brain.last_it_update = global_time;
+			++cell.brain.iterator;
 		}
-
 		
 
 		if (b.n_angle >= 90 && b.n_angle <= 270) {
@@ -124,49 +140,65 @@ void Pendulum::Update()
 			cell.GiveScore(b.n_angle);
 
 		}
-		cell.brain.time_until_update -= TimeDifference<float>(cell.brain.last_it_update, GetTime());
 		//engine->DrawString({ 0,100 }, std::format("iteration: {}\nangle: {}", distance(cell.brain.directions.begin(), cell.brain.it), b.n_angle), COL::BLACK);
-
+		cell.brain.time_alive = TimeDifference<float>(pendulum->start_time, global_time);
 	}
 	else {
 		cell.OnDeath();
 	}
-	//engine->DrawString({ 0,100 }, std::format("score: {}\nbest score: {}\ngeneration: {}", cell.score, BestCell.score, total_attempts), COL::BLACK);
 
-	//if (engine->GetKey(olc::Key::DEL).bPressed) {
-	//	b.angle = 1.f;
-	//	b.velocity = 0;
-	//	
-	//}
+	UpdateStand(*cell.brain.it);
+	UpdateBall();
 
-	engine->DrawLine({ int(s.pos.x), int(s.pos.y - s.mins.y/2)}, b.real_pos, COL::BLACK);
+	
+	engine->SetPixelMode(olc::Pixel::ALPHA);
 
-	s.Draw();
-	b.Draw();
+	DrawStand();
+	DrawBall();
+
+	auto col = olc::Pixel(olc::BLACK);
+
+	if (!cell.best)
+		col.a = 55;
+
+	engine->DrawLine({ int(s.pos.x), int(s.pos.y - s.mins.y / 2) }, b.real_pos, col);
+
+	engine->SetPixelMode(olc::Pixel::NORMAL);
+
 
 	if (cell.brain.it == cell.brain.directions.end())
 		cell.dead = true;
 
+	cell.brain.frames++;
+
 }
 void Pendulum::Reset()
 {
-	s.pos = { (float)pos.x, (float)pos.y + 5 };
-	const int length = (pos.x + maxs.x - (pos.x - mins.x)) / 15;
+	s.pos = { (float)s.original_pos.x, (float)s.original_pos.y + 5 };
+	const int length = (s.original_pos.x + maxs.x - (s.original_pos.x - mins.x)) / 15;
 	s.mins = { length, 15 };
 	s.maxs = { length, 15 };
+	s.t = 0;
+	s.ref_velocity = 0;
+	s.velocity = 0;
 	//s.color = Pixel(255, 0, 0, 255);
 
-	b.pos = { pos.x, pos.y - int(b.line_length) };
+	b.pos = { (int)s.original_pos.x, (int)s.original_pos.y - int(b.line_length) };
 	b.radius = 7;
-	b.color = Pixel(255, 0, 0, 255);
+	//b.color = Pixel(255, 0, 0, 255);
 	b.pivot = &s.pos;
-	b.angle = 359;
+	b.angle = 1;
+	b.n_angle = 0;
 	b.velocity = 0;
-
-	b.pos.x = b.pos.x + (SIN(b.angle) * 10);
-	b.pos.y = b.pos.y - (COS(b.angle) * 10);
 
 	cell.dead = false;
 	cell.score = NULL;
-	cell.brain.time_until_update = 0.5;
+	cell.brain.time_until_update = 0;
+	cell.brain.iterator = 0;
+	//cell.brain.last_it_update = GetTime();
+	cell.brain.steps_taken = 0;
+	fElapsed = 0;
+	rightmove = false;
+
+	//std::cout << "spawnpos: { " << b.pivot->x << " , " << b.pivot->y << " }\n";
 }

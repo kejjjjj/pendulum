@@ -27,6 +27,7 @@ public:
 	Brain brain;
 	float score = 0;
 	bool dead = false;
+	bool best = false;
 
 	//Cell copy() { return *this; }
 

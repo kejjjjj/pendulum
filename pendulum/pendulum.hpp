@@ -15,14 +15,16 @@ public:
 
 	struct stand
 	{
+		fvec2 original_pos;
 		fvec2 pos;
 		ivec2 mins;
 		ivec2 maxs;
-		Pixel color;
+		olc::Pixel color;
 		float velocity;
-		ivec2 delta_pos;
+		float t = 0;
+		float ref_velocity = 0;
 
-		void Draw();
+		
 	}s;
 
 	struct Ball
@@ -31,17 +33,20 @@ public:
 		ivec2 real_pos;
 		fvec2* pivot;
 		float radius = 0;
-		Pixel color;
+		olc::Pixel color;
 		float line_length = 100;
 		float angle = 0;
 		float n_angle = 0;
 		float velocity;
 		float damping = 0.995f;
-		void Draw();
 	}b;
 
 	void UpdateStand(int direction);
 	void UpdateBall();
+
+	void DrawStand();
+	void DrawBall();
+
 	void Reset();
 
 	ivec2 pos;

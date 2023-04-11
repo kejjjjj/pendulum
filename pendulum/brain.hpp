@@ -14,7 +14,12 @@ public:
 	}
 	void Create(size_t num_instructions) {
 		for (int i = 0; i < num_instructions; i++) {
-			directions.push_back(int(random(-2, 2)));
+			int value = int(random(-2, 2));
+
+			while (value == NULL) {
+				value = int(random(-2, 2));
+			}
+			directions.push_back(value);
 
 
 		}
@@ -25,18 +30,25 @@ public:
 		std::for_each(directions.begin(), directions.end(), [&rate](short& dir)
 			{
 				if (random(1.f) < rate) {
-					dir = int(random(-2, 2));
+					int value = int(random(-2, 2));
+
+					while (value == NULL) {
+						value = int(random(-2, 2));
+					}
+					dir = value;
 				}
 			});
 		it = directions.begin();
-		time_until_update = 0.5f;
+		time_until_update = 0;
+		directions.front() = 0;
 	}
 	size_t steps_taken = 0;
 	std::list<short> directions;
 	std::list<short>::iterator it;
+	int iterator = 0;
 	float time_alive = 0;
-	float time_until_update = 0.5f;
-	decltype(GetTime()) last_it_update;
+	float time_until_update = 0;
+	int frames = 0;
 };
 
 

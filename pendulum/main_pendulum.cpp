@@ -17,11 +17,12 @@ void MainPendulum::Draw()
 
 void _main()
 {
-	static Population population(1000);
+	static Population population(100);
 	
 	if (GetAsyncKeyState(VK_NUMPAD0) & 1) {
 		population.active = true;
 		population.Reset();
+		pendulum->start_time = GetTime();
 	}
 
 	if(population.active) {
@@ -33,15 +34,16 @@ void _main()
 
 
 		if (!population.active) {
-			std::cout << "new generation\n";
+			//std::cout << "new generation\n";
 			population.NewGeneration();
 			population.active = true;
 			population.Reset();
-			Sleep(500);
+			pendulum->start_time = GetTime();
+			//Sleep(500);
 		}
 	}
 
-	engine->DrawString({ 0,100 }, std::format("best score: {}\ngeneration: {}", BestCell.score, total_attempts), COL::BLACK);
+	engine->DrawString({ 0,100 }, std::format("best score: {:.3f}s\ngeneration: {}", BestCell.brain.time_alive, total_attempts), COL::BLACK);
 
 
 }

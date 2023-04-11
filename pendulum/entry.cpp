@@ -14,6 +14,11 @@ bool Game::OnUserCreate()
 
 	engine = this;
 
+	std::cout << "fmodf(359, 90) = " << fmodf(359, 90) << '\n';
+	std::cout << "fmodf(1, 90) = " << fmodf(1, 90) << '\n';
+	std::cout << "fmodf(70, 90) = " << fmodf(70, 90) << '\n';
+	std::cout << "fmodf(271, 90) = " << fmodf(271, 90) << '\n';
+
 	return true;
 }
 bool Game::OnUserUpdate(float fElapsedTime)

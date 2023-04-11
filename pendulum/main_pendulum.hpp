@@ -21,6 +21,11 @@ public:
 		void Draw();
 	}pf;
 
+	decltype(GetTime()) last_population_update;
+	decltype(GetTime()) last_it_update;
+	decltype(GetTime()) start_time;
+	float time_until_update;
+
 	void Draw();
 
 };

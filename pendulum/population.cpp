@@ -58,8 +58,9 @@ void Population::NewGeneration()
 {
 	static std::vector<Cell> newCells;
 	if (newCells.empty()) {
-		for (auto i : population)
+		for (auto i : population) {
 			newCells.push_back(i->cell);
+		}
 	}
 
 	const auto GetRandomParent = [this]() -> Cell* {
@@ -80,12 +81,26 @@ void Population::NewGeneration()
 	Cell best = SetBestCell();
 
 	if (BestCell.score >= best.score) {
-		best = BestCell;
-	}
-	else
-		BestCell = best;
+		best.score = BestCell.score;
+		best.brain.directions = BestCell.brain.directions;
+		best.brain.time_alive = BestCell.brain.time_alive;
 
+	}
+	else {
+		BestCell.score = best.score;
+		BestCell.brain.directions = best.brain.directions;
+		BestCell.brain.time_alive = best.brain.time_alive;
+
+		std::time_t now = std::time(0);
+#pragma warning(suppress : 4996)
+		char* dt = std::ctime(&now);
+
+		std::cout << "new record: " << std::format("{:.3f}s", BestCell.brain.time_alive) << " : " << dt;
+		//auto dist = std::distance(best.brain.directions.begin(), best.brain.it);
+		std::cout << "instructions used: " << best.brain.iterator << '/' << best.brain.directions.size() << '\n';
+	}
 	newCells[0] = best;
+	newCells[0].best = true;
 
 	for (int i = 1; i < population.size(); i++) {
 
@@ -97,9 +112,10 @@ void Population::NewGeneration()
 
 	int j = 0;
 	for (auto& i : population) {
-		i->cell = best;
+		i->cell = newCells[j];
 		i->cell.brain.Mutate();
-
+		if (j)
+			i->cell.best = false;
 		j++;
 	}
 	total_attempts++;
